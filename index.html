@@ -3,192 +3,130 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HERO STORE ⚡ | الدفع والتأكيد</title>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <title>HERO STORE ⚡</title>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
-        :root {
-            --electric-blue: #00f5ff;
-            --dark-bg: #000000;
-        }
-
-        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        body { background-color: var(--dark-bg); color: #fff; overflow-x: hidden; }
-
-        /* تأثير الرعد في الخلفية */
-        .thunder-bg {
-            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -2; background: url('https://i.ibb.co/cX8hJNDx/IMG-1910.jpg') center/cover no-repeat fixed;
-            filter: brightness(0.4);
-            animation: thunderStrike 7s infinite;
-        }
-        @keyframes thunderStrike {
-            0%, 92%, 96%, 100% { filter: brightness(0.4); }
-            94% { filter: brightness(1.5) contrast(1.2); }
-        }
-
-        .navbar { 
-            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); position: sticky; top: 0; z-index: 1000; border-bottom: 2px solid var(--electric-blue);
-        }
-        .logo { font-family: 'Oswald', sans-serif; font-size: 1.8rem; color: #fff; text-shadow: 0 0 10px var(--electric-blue); }
-        .cart-bolt { position: relative; cursor: pointer; color: var(--electric-blue); font-size: 1.8rem; }
-        .badge { position: absolute; top: -5px; right: -12px; background: red; color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; }
-
-        .brand-header { text-align: center; padding: 40px 20px; }
-        .brand-header h1 { font-family: 'Oswald', sans-serif; font-size: 3.5rem; text-shadow: 0 0 20px var(--electric-blue); }
-
-        .container { padding: 20px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
-        .card { background: rgba(255, 255, 255, 0.03); border-radius: 12px; border: 1px solid rgba(0, 245, 255, 0.1); overflow: hidden; text-align: center; padding-bottom: 10px; }
-        .card img { width: 100%; height: 180px; object-fit: cover; }
-
-        /* السلة والدفع */
-        .cart-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 3000; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
+        :root { --electric-blue: #00f5ff; --dark-bg: #050505; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: 'Cairo', sans-serif; background: var(--dark-bg); color: #fff; }
         
-        .form-group { margin-bottom: 15px; text-align: right; }
-        .form-group label { display: block; margin-bottom: 5px; color: var(--electric-blue); font-weight: bold; }
-        .input-hero { width: 100%; padding: 12px; background: #111; border: 1px solid #333; color: #fff; border-radius: 8px; outline: none; }
-        .input-hero:focus { border-color: var(--electric-blue); }
+        /* Navbar */
+        .navbar { padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; background: #000; border-bottom: 2px solid var(--electric-blue); position: sticky; top: 0; z-index: 1000; }
+        .logo { font-family: 'Oswald'; font-size: 2rem; font-weight: 900; text-shadow: 0 0 10px var(--electric-blue); }
+        .cart-btn { color: var(--electric-blue); font-size: 1.8rem; cursor: pointer; position: relative; }
+        .badge { position: absolute; top: -5px; right: -10px; background: red; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; }
 
-        .payment-options { display: flex; gap: 10px; margin-top: 10px; }
-        .pay-btn { flex: 1; padding: 10px; border: 1px solid #333; background: #111; color: #fff; cursor: pointer; border-radius: 8px; transition: 0.3s; text-align: center; }
-        .pay-btn.active { border-color: var(--electric-blue); background: rgba(0, 245, 255, 0.1); color: var(--electric-blue); }
+        /* Grid */
+        .container { padding: 20px; display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }
+        .card { background: #111; border-radius: 15px; overflow: hidden; border: 1px solid #222; text-align: center; }
+        .card img { width: 100%; height: 220px; object-fit: cover; cursor: pointer; }
+        .card-info { padding: 15px; }
+        .price { color: var(--electric-blue); font-family: 'Oswald'; font-size: 1.4rem; }
 
-        .voda-info { background: #111; border: 1px dashed var(--electric-blue); padding: 15px; border-radius: 10px; margin-top: 15px; display: none; text-align: center; }
-        .voda-number { font-size: 1.4rem; font-family: 'Oswald'; color: var(--electric-blue); letter-spacing: 2px; display: block; margin: 10px 0; }
+        /* المودالات (السلة وعرض المنتج) */
+        .modal { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.95); z-index: 2000; display: none; flex-direction: column; padding: 20px; overflow-y: auto; }
+        .modal-content { background: #111; padding: 20px; border-radius: 20px; border: 1px solid var(--electric-blue); margin-top: 20px; }
+        
+        /* عرض المنتج */
+        .view-img { width: 100%; border-radius: 15px; margin-bottom: 15px; border: 1px solid #333; }
+        .view-title { font-size: 1.5rem; color: #fff; margin-bottom: 10px; }
+        .view-desc { font-size: 0.9rem; color: #aaa; margin-bottom: 20px; line-height: 1.6; }
 
-        .confirm-btn { width: 100%; padding: 18px; background: var(--electric-blue); color: #000; border: none; border-radius: 10px; font-weight: 900; font-size: 1.2rem; cursor: pointer; margin-top: 20px; }
-
-        /* صفحة التفاصيل */
-        .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.98); z-index: 2000; display: none; }
-        .overlay-content { padding: 20px; text-align: right; }
+        /* الدفع */
+        .payment-option { border: 1px solid #333; padding: 15px; border-radius: 12px; margin-bottom: 10px; cursor: pointer; }
+        .active { border-color: var(--electric-blue); background: rgba(0, 245, 255, 0.05); }
+        #voda-box { background: #1a0000; padding: 15px; border-radius: 10px; border: 1px solid #e60000; display: none; margin-bottom: 15px; }
+        
+        input { width: 100%; padding: 12px; margin-top: 10px; border-radius: 8px; border: 1px solid #333; background: #111; color: #fff; text-align: right; }
+        .btn-main { background: var(--electric-blue); color: #000; border: none; padding: 15px; border-radius: 8px; font-weight: 900; width: 100%; cursor: pointer; margin-top: 10px; }
+        .close-icon { float: left; font-size: 1.5rem; cursor: pointer; color: #fff; }
     </style>
 </head>
 <body>
 
-    <div class="thunder-bg"></div>
-
     <nav class="navbar">
         <div class="logo">HERO</div>
-        <div class="cart-bolt" onclick="openCart()">
+        <div class="cart-btn" onclick="openModal('cartModal')">
             <i class="fas fa-bolt"></i>
-            <span class="badge" id="cartBadge">0</span>
+            <span class="badge" id="count">0</span>
         </div>
     </nav>
 
-    <div class="brand-header">
-        <h1>HERO STORE</h1>
-        <p style="color:var(--electric-blue); letter-spacing:3px;">SHOP NOW</p>
+    <div class="container">
+        <div class="card">
+            <img src="https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600" onclick="viewProduct('تيشيرت الدرع الأسود', '450 EGP', this.src, 'تيشيرت قطن 100% عالي الجودة، تصميم مريح للتمارين الشاقة، مقاوم للعرق ويعطي مظهر الوحش.')">
+            <div class="card-info">
+                <p>تيشيرت الدرع الأسود</p>
+                <div class="price">450 EGP</div>
+            </div>
+        </div>
     </div>
 
-    <div class="container" id="productGrid"></div>
+    <div id="productView" class="modal">
+        <i class="fas fa-times close-icon" onclick="closeModal('productView')"></i>
+        <div class="modal-content">
+            <img id="v-img" src="" class="view-img">
+            <h2 id="v-title" class="view-title"></h2>
+            <p id="v-price" class="price" style="margin-bottom: 10px;"></p>
+            <p id="v-desc" class="view-desc"></p>
+            <button class="btn-main" onclick="add(); closeModal('productView')">أضف للقوة ⚡</button>
+        </div>
+    </div>
 
-    <div class="cart-page" id="cartPage">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2 style="color:var(--electric-blue)">تأكيد الطلب ⚡</h2>
-            <i class="fas fa-arrow-left" onclick="closeCart()" style="font-size:1.8rem; cursor:pointer"></i>
+    <div id="cartModal" class="modal">
+        <i class="fas fa-times close-icon" onclick="closeModal('cartModal')"></i>
+        <h2 style="color:var(--electric-blue); margin-bottom:20px;">الدفع والشحن</h2>
+
+        <div class="payment-option active" id="opt-cash" onclick="setPayment('cash')">كاش عند الاستلام</div>
+        <div class="payment-option" id="opt-voda" onclick="setPayment('voda')">فودافون كاش</div>
+
+        <div id="voda-box">
+            <p style="text-align:center">حول لـ: <strong style="color:#e60000">010XXXXXXXX</strong></p>
+            <input type="file" accept="image/*">
         </div>
 
-        <div id="cartList" style="margin-bottom:20px;"></div>
-
-        <form action="https://formspree.io/f/xjgjkvqv" method="POST" enctype="multipart/form-data">
-            <input type="hidden" name="Order_Items" id="orderData">
-            <input type="hidden" name="Payment_Method" id="methodData" value="Cash">
-
-            <div class="form-group">
-                <label>الاسم بالكامل</label>
-                <input type="text" name="Client_Name" class="input-hero" required placeholder="مثلاً: محمد علي">
-            </div>
-
-            <div class="form-group">
-                <label>رقم الموبايل</label>
-                <input type="tel" name="Client_Phone" class="input-hero" required placeholder="01xxxxxxxxx">
-            </div>
-
-            <div class="form-group">
-                <label>العنوان بالتفصيل</label>
-                <input type="text" name="Client_Address" class="input-hero" required placeholder="المدينة - اسم الشارع - رقم الدور">
-            </div>
-
-            <div class="form-group">
-                <label>طريقة الدفع</label>
-                <div class="payment-options">
-                    <div class="pay-btn active" id="btnCash" onclick="setPayment('Cash')">كاش عند الاستلام</div>
-                    <div class="pay-btn" id="btnVoda" onclick="setPayment('Vodafone')">فودافون كاش</div>
-                </div>
-            </div>
-
-            <div class="voda-info" id="vodaDetails">
-                <p>حول المبلغ على الرقم ده:</p>
-                <span class="voda-number">01018758798</span>
-                <p style="font-size: 0.8rem; color: #888;">بعد التحويل، ارفع صورة السكرين شوت هنا 👇</p>
-                <input type="file" name="Screenshot" class="input-hero" style="margin-top:10px;">
-            </div>
-
-            <div id="totalPrice" style="text-align:center; padding:20px; font-size:1.5rem; color:var(--electric-blue)">الإجمالي: 0 EGP</div>
-            
-            <button type="submit" class="confirm-btn">إرسال الطلب للبريد 🚀</button>
+        <form action="https://formspree.io/f/xjgjkvqv" method="POST">
+            <input type="hidden" name="Method" id="method-val" value="Cash">
+            <input type="text" name="Name" placeholder="الاسم" required>
+            <input type="tel" name="Phone" placeholder="الموبايل" required>
+            <input type="text" name="Address" placeholder="العنوان" required>
+            <button type="submit" class="btn-main">تأكيد الأوردر 🚀</button>
         </form>
     </div>
 
     <script>
-        const products = [
-            { id: 1, name: "سترينجر هيرو - أسود", price: 350, img: "https://images.unsplash.com/photo-1583454110551-21f2fa20019b?w=600" },
-            { id: 2, name: "تيشيرت الوحش", price: 450, img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600" },
-            { id: 3, name: "بنطلون برو جوجر", price: 600, img: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=600" },
-            { id: 4, name: "هودي هيرو ثيرمال", price: 850, img: "https://images.unsplash.com/photo-1556813820-673c2f92d46a?w=600" }
-        ];
+        let cart = 0;
+        function add() { cart++; document.getElementById('count').innerText = cart; }
+        
+        function openModal(id) { document.getElementById(id).style.display = 'flex'; }
+        function closeModal(id) { document.getElementById(id).style.display = 'none'; }
 
-        let cart = [];
-
-        function setPayment(method) {
-            document.getElementById('methodData').value = method;
-            document.getElementById('btnCash').classList.toggle('active', method === 'Cash');
-            document.getElementById('btnVoda').classList.toggle('active', method === 'Vodafone');
-            document.getElementById('vodaDetails').style.display = (method === 'Vodafone') ? 'block' : 'none';
+        // وظيفة عرض المنتج
+        function viewProduct(title, price, img, desc) {
+            document.getElementById('v-title').innerText = title;
+            document.getElementById('v-price').innerText = price;
+            document.getElementById('v-img').src = img;
+            document.getElementById('v-desc').innerText = desc;
+            openModal('productView');
         }
 
-        function renderProducts() {
-            const grid = document.getElementById('productGrid');
-            grid.innerHTML = products.map(p => `
-                <div class="card" onclick="addToCart(${p.id})">
-                    <img src="${p.img}">
-                    <div style="padding:10px">
-                        <h3>${p.name}</h3>
-                        <div style="color:var(--electric-blue)">${p.price} EGP</div>
-                        <p style="font-size:0.7rem; margin-top:5px; color:#888;">اضغط للإضافة ⚡</p>
-                    </div>
-                </div>
-            `).join('');
+        function setPayment(type) {
+            const vBox = document.getElementById('voda-box');
+            const mVal = document.getElementById('method-val');
+            if(type === 'voda') {
+                vBox.style.display = 'block';
+                mVal.value = "Vodafone Cash";
+                document.getElementById('opt-voda').classList.add('active');
+                document.getElementById('opt-cash').classList.remove('active');
+            } else {
+                vBox.style.display = 'none';
+                mVal.value = "Cash";
+                document.getElementById('opt-cash').classList.add('active');
+                document.getElementById('opt-voda').classList.remove('active');
+            }
         }
-
-        function addToCart(id) {
-            const product = products.find(p => p.id === id);
-            cart.push(product);
-            updateCart();
-            alert("تمت الإضافة للسلة! 💪");
-        }
-
-        function updateCart() {
-            document.getElementById('cartBadge').innerText = cart.length;
-            let total = 0;
-            let summary = "";
-            cart.forEach(item => {
-                total += item.price;
-                summary += `- ${item.name} (${item.price})\n`;
-            });
-            document.getElementById('totalPrice').innerText = "الإجمالي: " + total + " EGP";
-            document.getElementById('orderData').value = summary + "Total: " + total;
-        }
-
-        function openCart() { 
-            if(cart.length === 0) return alert("السلة فاضية!");
-            document.getElementById('cartPage').style.display = 'flex'; 
-        }
-        function closeCart() { document.getElementById('cartPage').style.display = 'none'; }
-
-        renderProducts();
     </script>
 </body>
 </html>
