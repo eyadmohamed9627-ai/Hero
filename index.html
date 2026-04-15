@@ -3,158 +3,95 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HERO STORE ⚡ - الوحش اللي جواك</title>
+    <title>HERO STORE ⚡ | القوة والتميز</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    
     <style>
         :root {
             --electric-blue: #00f5ff;
             --thunder-purple: #9d00ff;
             --dark-void: #050505;
+            --glass: rgba(255, 255, 255, 0.05);
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+        * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
+        
         body { 
-            font-family: 'Cairo', sans-serif; 
-            background: var(--dark-void); 
+            background-color: var(--dark-void); 
             color: #fff; 
-            overflow-x: hidden;
+            overflow-x: hidden; 
+            line-height: 1.6;
         }
 
         /* فيديو البرق في الخلفية */
         .thunder-bg {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            z-index: -1;
-            object-fit: cover;
-            opacity: 0.4;
-            filter: saturate(1.5) contrast(1.2);
+            position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+            z-index: -1; object-fit: cover; opacity: 0.3; filter: saturate(1.5);
         }
 
-        /* الهيدر */
-        header {
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(15px);
-            border-bottom: 2px solid var(--electric-blue);
-            padding: 1rem 5%;
-            position: fixed;
-            width: 100%;
-            top: 0; z-index: 1000;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* Navbar */
+        .navbar { 
+            padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(15px); position: sticky; top: 0; 
+            z-index: 1000; border-bottom: 2px solid var(--electric-blue);
         }
+        .logo { font-family: 'Oswald', sans-serif; font-size: 2rem; font-weight: 900; letter-spacing: 3px; color: #fff; text-shadow: 0 0 15px var(--electric-blue); }
+        .cart-icon { position: relative; cursor: pointer; font-size: 1.5rem; color: var(--electric-blue); transition: 0.3s; }
+        .cart-icon:hover { transform: scale(1.1); color: #fff; }
+        .badge { position: absolute; top: -8px; right: -12px; background: var(--thunder-purple); color: white; font-size: 0.7rem; padding: 3px 7px; border-radius: 50%; box-shadow: 0 0 10px var(--thunder-purple); }
 
-        .logo {
-            font-family: 'Oswald', sans-serif;
-            font-size: 2.5rem;
-            font-weight: 900;
-            letter-spacing: 5px;
-            color: #fff;
-            text-shadow: 0 0 10px var(--electric-blue), 0 0 20px var(--electric-blue);
-            text-transform: uppercase;
-        }
-
-        /* الهيرو سيكشن */
+        /* Hero Section */
         .hero {
-            height: 100vh;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            text-align: center;
-            background: radial-gradient(circle, rgba(0, 245, 255, 0.1) 0%, transparent 70%);
+            height: 70vh; display: flex; flex-direction: column; justify-content: center; 
+            align-items: center; text-align: center; background: radial-gradient(circle, rgba(0,245,255,0.1) 0%, transparent 70%);
         }
+        .hero h1 { font-family: 'Oswald', sans-serif; font-size: 5rem; font-weight: 900; text-transform: uppercase; filter: drop-shadow(0 0 20px var(--electric-blue)); margin-bottom: 10px; }
+        .hero p { font-size: 1.2rem; color: var(--electric-blue); font-weight: bold; letter-spacing: 2px; }
 
-        .hero h1 {
-            font-size: 6rem;
-            font-family: 'Oswald', sans-serif;
-            font-weight: 900;
-            background: linear-gradient(to bottom, #fff, #666);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            filter: drop-shadow(0 0 30px var(--electric-blue));
-            margin-bottom: 10px;
-        }
-
-        .hero p {
-            font-size: 1.5rem;
-            letter-spacing: 3px;
-            color: var(--electric-blue);
-            text-transform: uppercase;
-            font-weight: bold;
-        }
-
-        /* كروت المنتجات */
-        .container {
-            padding: 100px 5%;
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
-        }
-
+        /* Product Grid */
+        .container { padding: 40px 5%; display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 30px; }
+        
         .card {
-            background: rgba(20, 20, 20, 0.8);
-            border: 1px solid #333;
-            border-radius: 0; /* شكل حاد للرجولة */
-            overflow: hidden;
-            transition: 0.4s;
-            position: relative;
+            background: var(--glass); backdrop-filter: blur(10px); border-radius: 20px; 
+            overflow: hidden; border: 1px solid rgba(0, 245, 255, 0.2); transition: 0.5s; position: relative;
         }
+        .card:hover { transform: translateY(-15px); border-color: var(--electric-blue); box-shadow: 0 0 30px rgba(0, 245, 255, 0.3); }
+        
+        .img-container { position: relative; height: 380px; overflow: hidden; }
+        .card img { width: 100%; height: 100%; object-fit: cover; transition: 0.6s; }
+        .card:hover img { transform: scale(1.1); }
+        
+        .badge-new { position: absolute; top: 15px; right: 15px; background: var(--electric-blue); color: #000; padding: 5px 15px; font-weight: 900; border-radius: 50px; z-index: 2; font-size: 0.8rem; }
 
-        .card:hover {
-            border-color: var(--electric-blue);
-            transform: scale(1.03) translateY(-10px);
-            box-shadow: 0 0 30px rgba(0, 245, 255, 0.3);
+        .card-info { padding: 20px; background: linear-gradient(to bottom, transparent, rgba(0,0,0,0.9)); }
+        .card-info h3 { font-size: 1.3rem; margin-bottom: 10px; color: #fff; }
+        .price { font-size: 1.6rem; color: var(--electric-blue); font-family: 'Oswald', sans-serif; font-weight: 700; }
+
+        .add-btn { 
+            width: 100%; background: transparent; color: var(--electric-blue); border: 2px solid var(--electric-blue); 
+            padding: 12px; border-radius: 12px; font-weight: 900; cursor: pointer; transition: 0.3s; margin-top: 15px;
+            display: flex; justify-content: center; align-items: center; gap: 10px;
         }
+        .add-btn:hover { background: var(--electric-blue); color: #000; box-shadow: 0 0 20px var(--electric-blue); }
 
-        .card img {
-            width: 100%;
-            height: 350px;
-            object-fit: cover;
-            filter: grayscale(0.5);
-            transition: 0.4s;
+        /* Cart Page */
+        .cart-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 2000; display: none; flex-direction: column; padding: 20px; }
+        .cart-header { display: flex; justify-content: space-between; align-items: center; border-bottom: 1px solid #333; padding-bottom: 15px; }
+        .cart-items-container { flex: 1; overflow-y: auto; margin: 20px 0; }
+        .cart-item { display: flex; gap: 15px; background: #111; padding: 15px; border-radius: 12px; margin-bottom: 10px; align-items: center; border: 1px solid #222; }
+        .cart-item img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
+        
+        .total-box { font-size: 1.5rem; font-weight: 900; color: var(--electric-blue); text-align: center; padding: 15px; border-top: 1px dashed #333; }
+        .form-box { background: #111; padding: 20px; border-radius: 15px; }
+        .input-lx { width: 100%; padding: 12px; background: #000; border: 1px solid #333; color: #fff; border-radius: 8px; margin-bottom: 10px; outline: none; }
+        .input-lx:focus { border-color: var(--electric-blue); }
+
+        @keyframes shake {
+            10%, 90% { transform: translate3d(-1px, 0, 0); }
+            20%, 80% { transform: translate3d(2px, 0, 0); }
+            30%, 50%, 70% { transform: translate3d(-3px, 0, 0); }
         }
-
-        .card:hover img { filter: grayscale(0); }
-
-        .card-info {
-            padding: 20px;
-            border-top: 2px solid var(--thunder-purple);
-        }
-
-        .price {
-            font-size: 1.8rem;
-            color: var(--electric-blue);
-            font-weight: 900;
-            margin: 10px 0;
-        }
-
-        .buy-btn {
-            width: 100%;
-            padding: 15px;
-            background: var(--electric-blue);
-            color: #000;
-            border: none;
-            font-family: 'Oswald', sans-serif;
-            font-weight: 900;
-            font-size: 1.2rem;
-            cursor: pointer;
-            transition: 0.3s;
-        }
-
-        .buy-btn:hover {
-            background: #fff;
-            box-shadow: 0 0 20px #fff;
-        }
-
-        /* تأثير الرعد المتنقل */
-        .bolt {
-            position: absolute;
-            top: 0; left: 0; width: 100%; height: 100%;
-            pointer-events: none;
-            box-shadow: inset 0 0 50px rgba(0, 245, 255, 0.1);
-        }
-
     </style>
 </head>
 <body>
@@ -163,67 +100,135 @@
         <source src="https://assets.mixkit.co/videos/preview/mixkit-thunderbolt-striking-in-the-dark-sky-1834-large.mp4" type="video/mp4">
     </video>
 
-    <header>
+    <nav class="navbar">
         <div class="logo">HERO</div>
-        <div style="font-size: 1.5rem; cursor: pointer;">🛒 <span id="count">0</span></div>
-    </header>
+        <div class="cart-icon" onclick="openCart()">
+            <i class="fas fa-bolt"></i>
+            <span class="badge" id="cartBadge">0</span>
+        </div>
+    </nav>
 
-    <section class="hero">
+    <div class="hero">
         <h1>HERO STORE</h1>
-        <p>لا مكان للضعفاء.. فقط الوحوش ⚡</p>
-    </section>
+        <p>AWAKEN THE BEAST WITHIN ⚡</p>
+    </div>
 
-    <div class="container">
-        <div class="card">
-            <div class="bolt"></div>
-            <img src="https://images.unsplash.com/photo-1583454110551-21f2fa20019b?w=500" alt="Gym Wear">
-            <div class="card-info">
-                <h3>تيشيرت "الدرع" الماص للعرق</h3>
-                <div class="price">450 EGP</div>
-                <button class="buy-btn" onclick="add()">أضف للقوة 🔥</button>
-            </div>
+    <div class="container" id="productGrid">
         </div>
 
-        <div class="card">
-            <div class="bolt"></div>
-            <img src="https://images.unsplash.com/photo-1517836357463-d25dfeac3438?w=500" alt="Gym Wear">
-            <div class="card-info">
-                <h3>بنطلون "التايتان" ليجنجز</h3>
-                <div class="price">600 EGP</div>
-                <button class="buy-btn" onclick="add()">أضف للقوة 🔥</button>
-            </div>
+    <div class="cart-page" id="cartPage">
+        <div class="cart-header">
+            <h2 style="color: var(--electric-blue);">معداتك الجاهزة ⚡</h2>
+            <i class="fas fa-times" onclick="closeCart()" style="cursor:pointer; font-size: 1.5rem;"></i>
         </div>
+        
+        <div class="cart-items-container" id="cartList"></div>
+        
+        <div class="total-box" id="totalPrice">الإجمالي: 0 EGP</div>
 
-        <div class="card">
-            <div class="bolt"></div>
-            <img src="https://images.unsplash.com/photo-1574680096145-d05b474e2155?w=500" alt="Gym Wear">
-            <div class="card-info">
-                <h3>سترينجر "هيرو" الأصلي</h3>
-                <div class="price">350 EGP</div>
-                <button class="buy-btn" onclick="add()">أضف للقوة 🔥</button>
-            </div>
-        </div>
+        <form action="https://formspree.io/f/xjgjkvqv" method="POST" class="form-box" onsubmit="return validateForm()">
+            <input type="hidden" name="Order_Details" id="hiddenData">
+            
+            <input type="text" name="Name" class="input-lx" placeholder="الاسم بالكامل" required>
+            <input type="tel" name="Phone" class="input-lx" placeholder="رقم الموبايل" required>
+            <textarea name="Address" class="input-lx" placeholder="العنوان بالتفصيل" required></textarea>
+            
+            <button type="submit" class="add-btn" style="background: var(--electric-blue); color: #000;">
+                تأكيد الطلب وشحن القوة 🚀
+            </button>
+        </form>
     </div>
 
     <script>
-        let counter = 0;
-        function add() {
-            counter++;
-            document.getElementById('count').innerText = counter;
-            // تأثير رعشة خفيفة عند الضغط
-            document.body.style.animation = "shake 0.2s cubic-bezier(.36,.07,.19,.97) both";
-            setTimeout(() => { document.body.style.animation = "" }, 200);
+        const products = [
+            { id: 1, name: "سترينجر هيرو الأصلي", price: 350, img: "https://images.unsplash.com/photo-1583454110551-21f2fa20019b?w=500" },
+            { id: 2, name: "تيشيرت الدرع الأسود", price: 450, img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=500" },
+            { id: 3, name: "بنطلون تايتان برو", price: 600, img: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=500" },
+            { id: 4, name: "هودى الوحش", price: 850, img: "https://images.unsplash.com/photo-1556813820-673c2f92d46a?w=500" }
+        ];
+
+        let cart = [];
+
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
+            grid.innerHTML = products.map(p => `
+                <div class="card">
+                    <div class="badge-new">NEW</div>
+                    <div class="img-container">
+                        <img src="${p.img}" alt="${p.name}">
+                    </div>
+                    <div class="card-info">
+                        <h3>${p.name}</h3>
+                        <div class="price">${p.price} EGP</div>
+                        <button class="add-btn" onclick="addToCart(${p.id})">
+                            أضف للقوة 🔥
+                        </button>
+                    </div>
+                </div>
+            `).join('');
         }
+
+        function addToCart(id) {
+            const product = products.find(p => p.id === id);
+            cart.push(product);
+            updateUI();
+            
+            // تأثير الهزة عند الإضافة
+            document.body.style.animation = "shake 0.3s";
+            setTimeout(() => document.body.style.animation = "", 300);
+        }
+
+        function updateUI() {
+            const cartList = document.getElementById('cartList');
+            const badge = document.getElementById('cartBadge');
+            const totalBox = document.getElementById('totalPrice');
+            const hiddenData = document.getElementById('hiddenData');
+
+            badge.innerText = cart.length;
+            
+            let total = 0;
+            let orderSummary = "";
+
+            cartList.innerHTML = cart.map((item, index) => {
+                total += item.price;
+                orderSummary += `- ${item.name} (${item.price} EGP)\n`;
+                return `
+                    <div class="cart-item">
+                        <img src="${item.img}">
+                        <div style="flex:1">
+                            <div style="font-weight:700">${item.name}</div>
+                            <div style="color:var(--electric-blue)">${item.price} EGP</div>
+                        </div>
+                        <i class="fas fa-trash" style="color:#ff4d4d; cursor:pointer;" onclick="removeFromCart(${index})"></i>
+                    </div>
+                `;
+            }).join('');
+
+            totalBox.innerText = `الإجمالي: ${total} EGP`;
+            hiddenData.value = `تفاصيل الأوردر:\n${orderSummary}\nإجمالي الحساب: ${total} EGP`;
+        }
+
+        function removeFromCart(index) {
+            cart.splice(index, 1);
+            updateUI();
+        }
+
+        function openCart() {
+            if(cart.length === 0) return alert("السلة فاضية يا وحش! املاها الأول 💪");
+            document.getElementById('cartPage').style.display = 'flex';
+        }
+
+        function closeCart() {
+            document.getElementById('cartPage').style.display = 'none';
+        }
+
+        function validateForm() {
+            if(cart.length === 0) return false;
+            alert("جارى إرسال طلبك عبر البرق.. سيتم توجيهك الآن ✅");
+            return true;
+        }
+
+        renderProducts();
     </script>
-
-    <style>
-        @keyframes shake {
-            10%, 90% { transform: translate3d(-1px, 0, 0); }
-            20%, 80% { transform: translate3d(2px, 0, 0); }
-            30%, 50%, 70% { transform: translate3d(-4px, 0, 0); }
-            40%, 60% { transform: translate3d(4px, 0, 0); }
-        }
-    </style>
-
 </body>
 </html>
