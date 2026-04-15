@@ -3,194 +3,202 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HERO STORE ⚡ | معدات الوحوش</title>
+    <title>HERO STORE ⚡</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
             --electric-blue: #00f5ff;
-            --dark-void: #050505;
+            --dark-bg: #000000;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
-        body { background-color: #000; color: #fff; overflow-x: hidden; }
+        body { background-color: var(--dark-bg); color: #fff; overflow-x: hidden; }
 
-        /* تأثير الرعد والخلفية اللي بعتها */
-        .thunder-bg {
+        /* 1. تأثير الرعد المطور على الصورة اللي بعتها */
+        .thunder-container {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2; background: url('https://i.ibb.co/cX8hJNDx/IMG-1910.jpg') center/cover no-repeat fixed;
-            opacity: 0.2;
-            animation: thunderFlash 6s infinite;
+            filter: brightness(0.4) saturate(1.2);
+            animation: thunderStrike 8s infinite;
         }
 
-        @keyframes thunderFlash {
-            0%, 94%, 100% { opacity: 0.2; filter: brightness(1); }
-            95% { opacity: 0.6; filter: brightness(2) drop-shadow(0 0 20px var(--electric-blue)); }
-            97% { opacity: 0.3; filter: brightness(1.5); }
+        @keyframes thunderStrike {
+            0%, 90%, 94%, 98%, 100% { filter: brightness(0.4) saturate(1.2); }
+            92%, 96% { filter: brightness(1.8) contrast(1.5) hue-rotate(10deg); } /* لحظة البرق */
         }
 
-        /* Navbar */
+        /* 2. الهيدر */
         .navbar { 
             padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(0,0,0,0.9); backdrop-filter: blur(10px); position: sticky; top: 0; 
+            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); position: sticky; top: 0; 
             z-index: 1000; border-bottom: 2px solid var(--electric-blue);
         }
         .logo { font-family: 'Oswald', sans-serif; font-size: 1.8rem; font-weight: 900; color: #fff; text-shadow: 0 0 10px var(--electric-blue); }
-        .cart-icon { position: relative; cursor: pointer; color: var(--electric-blue); font-size: 1.4rem; }
+        .cart-btn { position: relative; cursor: pointer; color: var(--electric-blue); font-size: 1.5rem; }
 
-        /* المنتجات صفين */
+        /* 3. المنتجات - نظام الصفين */
         .container { 
-            padding: 20px 3%; 
+            padding: 20px 4%; 
             display: grid; 
-            grid-template-columns: repeat(2, 1fr); /* صفين */
+            grid-template-columns: repeat(2, 1fr); /* صفين ثابتين */
             gap: 15px; 
         }
 
-        .card {
+        .product-card {
             background: rgba(255, 255, 255, 0.03);
-            backdrop-filter: blur(5px);
-            border-radius: 15px;
+            backdrop-filter: blur(8px);
+            border-radius: 12px;
             overflow: hidden;
             border: 1px solid rgba(0, 245, 255, 0.1);
             transition: 0.3s;
             cursor: pointer;
         }
-        .card:hover { border-color: var(--electric-blue); transform: scale(1.02); }
+        .product-card:hover { border-color: var(--electric-blue); transform: translateY(-5px); }
 
-        .img-container { height: 220px; overflow: hidden; position: relative; }
-        .img-container img { width: 100%; height: 100%; object-fit: cover; }
+        .img-box { height: 200px; overflow: hidden; position: relative; }
+        .img-box img { width: 100%; height: 100%; object-fit: cover; }
 
-        .card-info { padding: 12px; text-align: center; }
-        .card-info h3 { font-size: 0.9rem; margin-bottom: 5px; height: 40px; overflow: hidden; }
-        .price { color: var(--electric-blue); font-weight: 900; font-size: 1.1rem; }
+        .info-box { padding: 12px; text-align: right; }
+        .info-box h3 { font-size: 0.85rem; margin-bottom: 5px; color: #eee; }
+        .price { color: var(--electric-blue); font-weight: 900; font-size: 1.1rem; font-family: 'Oswald'; }
 
-        /* صفحة تفاصيل المنتج (تفتح فوق الصفحة) */
-        .product-page {
+        /* 4. صفحة التفاصيل (تفتح عند الضغط) */
+        .detail-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: #000; z-index: 2000; display: none;
-            overflow-y: auto; padding-bottom: 30px;
+            background: rgba(0,0,0,0.98); z-index: 2000; display: none;
+            overflow-y: auto; padding: 0 0 40px 0;
         }
-        .close-btn { position: absolute; top: 20px; right: 20px; font-size: 2rem; color: var(--electric-blue); z-index: 2001; }
-        .detail-img { width: 100%; max-height: 50vh; object-fit: cover; border-bottom: 2px solid var(--electric-blue); }
-        .detail-info { padding: 25px; }
-        .detail-title { font-size: 2rem; font-family: 'Oswald'; margin-bottom: 10px; }
-        .detail-desc { color: #aaa; margin-bottom: 20px; line-height: 1.8; }
+        .close-detail { position: absolute; top: 20px; left: 20px; font-size: 2rem; color: var(--electric-blue); z-index: 2001; cursor: pointer; }
+        .detail-img { width: 100%; max-height: 450px; object-fit: cover; border-bottom: 3px solid var(--electric-blue); }
+        .detail-content { padding: 25px; text-align: right; }
+        .detail-title { font-size: 2.2rem; font-family: 'Oswald'; margin-bottom: 10px; color: #fff; }
+        .detail-desc { color: #bbb; margin-bottom: 25px; line-height: 1.8; font-size: 1rem; }
         
-        .add-to-cart-btn {
+        .action-btn {
             width: 100%; padding: 18px; background: var(--electric-blue); color: #000;
-            border: none; border-radius: 10px; font-weight: 900; font-size: 1.2rem; cursor: pointer;
+            border: none; border-radius: 12px; font-weight: 900; font-size: 1.2rem; cursor: pointer;
+            text-transform: uppercase; transition: 0.3s;
         }
+        .action-btn:hover { box-shadow: 0 0 20px var(--electric-blue); }
 
-        /* السلة */
-        .cart-modal { position: fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:3000; display:none; flex-direction:column; padding:20px; }
-        .cart-item { display:flex; justify-content:space-between; padding:15px; background:#111; margin-bottom:10px; border-radius:8px; }
+        /* 5. السلة */
+        .cart-modal { position: fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:3000; display:none; flex-direction:column; padding:25px; }
+        .cart-item { display:flex; justify-content:space-between; padding:15px; background:#111; margin-bottom:10px; border-radius:10px; border:1px solid #222; }
     </style>
 </head>
 <body>
 
-    <div class="thunder-bg"></div>
+    <div class="thunder-container"></div>
 
     <nav class="navbar">
         <div class="logo">HERO STORE</div>
-        <div class="cart-icon" onclick="openCart()">
-            <i class="fas fa-bolt"></i>
-            <span id="cartCount" style="position:absolute; top:-10px; right:-10px; background:red; color:#fff; font-size:0.7rem; padding:2px 6px; border-radius:50%">0</span>
+        <div class="cart-btn" onclick="openCart()">
+            <i class="fas fa-shopping-basket"></i>
+            <span id="cartCount" style="position:absolute; top:-10px; right:-15px; background:var(--electric-blue); color:#000; font-size:0.75rem; font-weight:bold; padding:2px 7px; border-radius:50%">0</span>
         </div>
     </nav>
 
-    <div class="container" id="productGrid">
-        </div>
+    <div class="container" id="mainGrid"></div>
 
-    <div class="product-page" id="productPage">
-        <i class="fas fa-times close-btn" onclick="closeProduct()"></i>
-        <div id="productDetails"></div>
+    <div class="detail-overlay" id="detailOverlay">
+        <i class="fas fa-times close-detail" onclick="closeDetail()"></i>
+        <div id="detailView"></div>
     </div>
 
     <div class="cart-modal" id="cartModal">
-        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:20px;">
-            <h2>سلة الوحوش 🛒</h2>
-            <i class="fas fa-arrow-left" onclick="closeCart()" style="font-size:1.5rem; cursor:pointer"></i>
+        <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
+            <h2 style="color:var(--electric-blue)">طلباتك يا وحش ⚡</h2>
+            <i class="fas fa-arrow-left" onclick="closeCart()" style="font-size:1.8rem; cursor:pointer"></i>
         </div>
         <div id="cartList" style="flex:1; overflow-y:auto;"></div>
-        <div id="totalPrice" style="padding:20px; font-size:1.5rem; text-align:center; color:var(--electric-blue)"></div>
-        <form action="https://formspree.io/f/xjgjkvqv" method="POST" style="background:#111; padding:15px; border-radius:10px;">
-            <input type="hidden" name="Order_Details" id="hiddenData">
-            <input type="text" name="Name" placeholder="الاسم" required style="width:100%; padding:10px; margin-bottom:10px; background:#000; border:1px solid #333; color:#fff;">
-            <input type="tel" name="Phone" placeholder="الموبايل" required style="width:100%; padding:10px; margin-bottom:10px; background:#000; border:1px solid #333; color:#fff;">
-            <button type="submit" class="add-to-cart-btn">إرسال الطلب لـ Gmail 🚀</button>
+        <div id="totalDisplay" style="padding:20px; font-size:1.8rem; text-align:center; color:var(--electric-blue); font-family:'Oswald'"></div>
+        
+        <form action="https://formspree.io/f/xjgjkvqv" method="POST" style="background:#080808; padding:20px; border-radius:15px; border:1px solid #222;">
+            <input type="hidden" name="Order_Items" id="orderData">
+            <input type="text" name="Name" placeholder="الاسم بالكامل" required style="width:100%; padding:15px; margin-bottom:12px; background:#000; border:1px solid #333; color:#fff; border-radius:8px; outline:none;">
+            <input type="tel" name="Phone" placeholder="رقم الموبايل للواتساب" required style="width:100%; padding:15px; margin-bottom:15px; background:#000; border:1px solid #333; color:#fff; border-radius:8px; outline:none;">
+            <button type="submit" class="action-btn">إرسال الطلب (Gmail) 🚀</button>
         </form>
     </div>
 
     <script>
         const products = [
-            { id: 1, name: "سترينجر هيرو الأصلي", price: 350, img: "https://images.unsplash.com/photo-1583454110551-21f2fa20019b?w=600", desc: "خامة قطنية ثقيلة، قصة هيرو اللي بتبرز العضلات، ومريحة جداً في التمرين الشاق." },
-            { id: 2, name: "تيشيرت الدرع الأسود", price: 450, img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600", desc: "تقنية طرد العرق، قماش مطاطي بيتحمل أقصى أنواع الحركة." },
-            { id: 3, name: "بنطلون تايتان برو", price: 600, img: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=600", desc: "جيوب بسوستة مخفية، حزام خصر عريض للثبات، مناسب للجيم والخروجات الكاجوال." },
-            { id: 4, name: "هودى الوحش", price: 850, img: "https://images.unsplash.com/photo-1556813820-673c2f92d46a?w=600", desc: "هودي حراري للتدفئة قبل التمرين، تصميم عصري وشعار هيرو مطرز." }
+            { id: 1, name: "سترينجر هيرو - أسود نيون", price: 350, img: "https://images.unsplash.com/photo-1583454110551-21f2fa20019b?w=700", desc: "خامة قطنية 100% ليكرا، قصة ضيقة تبرز تفاصيل العضلات، مثالي للتمارين الشاقة." },
+            { id: 2, name: "تيشيرت بروفورمانس", price: 450, img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=700", desc: "مزود بتقنية طرد العرق وسريع الجفاف، خفيف جداً على الجسم أثناء التمرين." },
+            { id: 3, name: "بنطلون جوجر برو", price: 600, img: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=700", desc: "جيوب جانبية بسوستة مخفية، نسيج مرن يسمح لك بالسكوات والجري بحرية كاملة." },
+            { id: 4, name: "هودى الشتاء هيرو", price: 850, img: "https://images.unsplash.com/photo-1556813820-673c2f92d46a?w=700", desc: "بطانة داخلية ناعمة للتدفئة، تصميم عصري لوجو هيرو العاكس في الظلام." }
         ];
 
-        let cart = [];
+        let myCart = [];
 
-        function renderProducts() {
-            const grid = document.getElementById('productGrid');
+        // عرض المنتجات صفين
+        function loadGrid() {
+            const grid = document.getElementById('mainGrid');
             grid.innerHTML = products.map(p => `
-                <div class="card" onclick="showProduct(${p.id})">
-                    <div class="img-container"><img src="${p.img}"></div>
-                    <div class="card-info">
+                <div class="product-card" onclick="openDetail(${p.id})">
+                    <div class="img-box"><img src="${p.img}"></div>
+                    <div class="info-box">
                         <h3>${p.name}</h3>
                         <div class="price">${p.price} EGP</div>
-                        <div style="font-size:0.7rem; color:var(--electric-blue); margin-top:5px;">عرض التفاصيل ⚡</div>
+                        <p style="font-size:0.65rem; color:var(--electric-blue); margin-top:4px;">تفاصيل القطعة ⚡</p>
                     </div>
                 </div>
             `).join('');
         }
 
-        function showProduct(id) {
-            const p = products.find(prod => prod.id === id);
-            const detailView = document.getElementById('productDetails');
-            detailView.innerHTML = `
+        // فتح صفحة التفاصيل
+        function openDetail(id) {
+            const p = products.find(i => i.id === id);
+            const view = document.getElementById('detailView');
+            view.innerHTML = `
                 <img src="${p.img}" class="detail-img">
-                <div class="detail-info">
+                <div class="detail-content">
                     <h1 class="detail-title">${p.name}</h1>
-                    <div class="price" style="font-size:1.8rem; margin-bottom:15px;">${p.price} EGP</div>
+                    <div class="price" style="font-size:2rem; margin-bottom:20px;">${p.price} EGP</div>
                     <p class="detail-desc">${p.desc}</p>
-                    <button class="add-to-cart-btn" onclick="addToCart(${p.id}); closeProduct();">أضف للسلة 🔥</button>
+                    <button class="action-btn" onclick="addToCart(${p.id}); closeDetail();">أضف إلى معداتك 🔥</button>
                 </div>
             `;
-            document.getElementById('productPage').style.display = 'block';
+            document.getElementById('detailOverlay').style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
-        function closeProduct() { document.getElementById('productPage').style.display = 'none'; }
+        function closeDetail() { 
+            document.getElementById('detailOverlay').style.display = 'none'; 
+            document.body.style.overflow = 'auto';
+        }
 
         function addToCart(id) {
-            const p = products.find(prod => prod.id === id);
-            cart.push(p);
+            const p = products.find(i => i.id === id);
+            myCart.push(p);
             updateCart();
-            alert("تمت الإضافة للوحوش! ✅");
         }
 
         function updateCart() {
-            document.getElementById('cartCount').innerText = cart.length;
+            document.getElementById('cartCount').innerText = myCart.length;
             let total = 0;
-            let text = "";
+            let summary = "";
             const list = document.getElementById('cartList');
-            list.innerHTML = cart.map(item => {
+            
+            list.innerHTML = myCart.map(item => {
                 total += item.price;
-                text += `- ${item.name} (${item.price} EGP)\n`;
-                return `<div class="cart-item"><span>${item.name}</span><span>${item.price} EGP</span></div>`;
+                summary += `- ${item.name} (${item.price} EGP)\n`;
+                return `<div class="cart-item"><span>${item.name}</span><span style="color:var(--electric-blue)">${item.price} EGP</span></div>`;
             }).join('');
-            document.getElementById('totalPrice').innerText = "الإجمالي: " + total + " EGP";
-            document.getElementById('hiddenData').value = text + "\nالإجمالي: " + total;
+            
+            document.getElementById('totalDisplay').innerText = `TOTAL: ${total} EGP`;
+            document.getElementById('orderData').value = `تفاصيل الطلب:\n${summary}\nالإجمالي: ${total} EGP`;
         }
 
         function openCart() { 
-            if(cart.length == 0) return alert("السلة فاضية!");
+            if(myCart.length === 0) return alert("السلة فاضية يا وحش!");
             document.getElementById('cartModal').style.display = 'flex'; 
         }
         function closeCart() { document.getElementById('cartModal').style.display = 'none'; }
 
-        renderProducts();
+        loadGrid();
     </script>
 </body>
 </html>
