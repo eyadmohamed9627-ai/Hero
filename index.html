@@ -3,50 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>HERO STORE ⚡</title>
+    <title>HERO STORE ⚡ | القوة والتميز</title>
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;700;900&family=Oswald:wght@700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
     
     <style>
         :root {
             --electric-blue: #00f5ff;
+            --thunder-purple: #9d00ff;
             --dark-bg: #000000;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; font-family: 'Cairo', sans-serif; }
         body { background-color: var(--dark-bg); color: #fff; overflow-x: hidden; }
 
-        /* 1. تأثير الرعد المطور على الصورة اللي بعتها */
-        .thunder-container {
+        /* تأثير الرعد في الخلفية */
+        .thunder-bg {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
             z-index: -2; background: url('https://i.ibb.co/cX8hJNDx/IMG-1910.jpg') center/cover no-repeat fixed;
             filter: brightness(0.4) saturate(1.2);
-            animation: thunderStrike 8s infinite;
+            animation: thunderStrike 7s infinite;
         }
-
         @keyframes thunderStrike {
-            0%, 90%, 94%, 98%, 100% { filter: brightness(0.4) saturate(1.2); }
-            92%, 96% { filter: brightness(1.8) contrast(1.5) hue-rotate(10deg); } /* لحظة البرق */
+            0%, 92%, 96%, 100% { filter: brightness(0.4); }
+            94% { filter: brightness(1.6) contrast(1.5); }
         }
 
-        /* 2. الهيدر */
+        /* Navbar */
         .navbar { 
             padding: 15px 5%; display: flex; justify-content: space-between; align-items: center; 
-            background: rgba(0,0,0,0.8); backdrop-filter: blur(10px); position: sticky; top: 0; 
+            background: rgba(0,0,0,0.85); backdrop-filter: blur(10px); position: sticky; top: 0; 
             z-index: 1000; border-bottom: 2px solid var(--electric-blue);
         }
         .logo { font-family: 'Oswald', sans-serif; font-size: 1.8rem; font-weight: 900; color: #fff; text-shadow: 0 0 10px var(--electric-blue); }
-        .cart-btn { position: relative; cursor: pointer; color: var(--electric-blue); font-size: 1.5rem; }
+        
+        /* أيقونة السلة (البرق) */
+        .cart-bolt { position: relative; cursor: pointer; color: var(--electric-blue); font-size: 1.8rem; transition: 0.3s; }
+        .cart-bolt:hover { transform: scale(1.2); text-shadow: 0 0 20px var(--electric-blue); }
+        .badge { position: absolute; top: -5px; right: -12px; background: red; color: #fff; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; }
 
-        /* 3. المنتجات - نظام الصفين */
+        /* سيكشن اسم البراند وشوب ناو */
+        .brand-header {
+            text-align: center;
+            padding: 60px 20px 30px;
+            background: radial-gradient(circle, rgba(0,245,255,0.05) 0%, transparent 70%);
+        }
+        .brand-header h1 {
+            font-family: 'Oswald', sans-serif;
+            font-size: 4rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            color: #fff;
+            text-shadow: 0 0 20px var(--electric-blue);
+        }
+        .shop-now-tag {
+            display: inline-block;
+            font-size: 1.2rem;
+            font-weight: 700;
+            color: var(--electric-blue);
+            border: 1px solid var(--electric-blue);
+            padding: 5px 25px;
+            border-radius: 50px;
+            letter-spacing: 3px;
+            text-transform: uppercase;
+            box-shadow: 0 0 10px rgba(0, 245, 255, 0.3);
+        }
+
+        /* المنتجات صفين */
         .container { 
             padding: 20px 4%; 
             display: grid; 
-            grid-template-columns: repeat(2, 1fr); /* صفين ثابتين */
+            grid-template-columns: repeat(2, 1fr); 
             gap: 15px; 
         }
 
-        .product-card {
+        .card {
             background: rgba(255, 255, 255, 0.03);
             backdrop-filter: blur(8px);
             border-radius: 12px;
@@ -55,150 +88,147 @@
             transition: 0.3s;
             cursor: pointer;
         }
-        .product-card:hover { border-color: var(--electric-blue); transform: translateY(-5px); }
+        .card:hover { border-color: var(--electric-blue); transform: translateY(-5px); }
 
-        .img-box { height: 200px; overflow: hidden; position: relative; }
+        .img-box { height: 200px; overflow: hidden; }
         .img-box img { width: 100%; height: 100%; object-fit: cover; }
 
-        .info-box { padding: 12px; text-align: right; }
-        .info-box h3 { font-size: 0.85rem; margin-bottom: 5px; color: #eee; }
-        .price { color: var(--electric-blue); font-weight: 900; font-size: 1.1rem; font-family: 'Oswald'; }
+        .info-box { padding: 12px; text-align: center; }
+        .info-box h3 { font-size: 0.9rem; margin-bottom: 5px; color: #eee; }
+        .price { color: var(--electric-blue); font-weight: 900; font-family: 'Oswald'; font-size: 1.2rem; }
 
-        /* 4. صفحة التفاصيل (تفتح عند الضغط) */
-        .detail-overlay {
+        /* صفحة التفاصيل */
+        .overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.98); z-index: 2000; display: none;
-            overflow-y: auto; padding: 0 0 40px 0;
+            background: rgba(0,0,0,0.98); z-index: 2000; display: none; overflow-y: auto;
         }
-        .close-detail { position: absolute; top: 20px; left: 20px; font-size: 2rem; color: var(--electric-blue); z-index: 2001; cursor: pointer; }
-        .detail-img { width: 100%; max-height: 450px; object-fit: cover; border-bottom: 3px solid var(--electric-blue); }
-        .detail-content { padding: 25px; text-align: right; }
-        .detail-title { font-size: 2.2rem; font-family: 'Oswald'; margin-bottom: 10px; color: #fff; }
-        .detail-desc { color: #bbb; margin-bottom: 25px; line-height: 1.8; font-size: 1rem; }
-        
-        .action-btn {
+        .close-btn { position: absolute; top: 20px; right: 20px; font-size: 2rem; color: var(--electric-blue); cursor: pointer; z-index: 2001; }
+        .overlay-img { width: 100%; max-height: 400px; object-fit: cover; border-bottom: 2px solid var(--electric-blue); }
+        .overlay-info { padding: 25px; text-align: right; }
+        .add-btn {
             width: 100%; padding: 18px; background: var(--electric-blue); color: #000;
-            border: none; border-radius: 12px; font-weight: 900; font-size: 1.2rem; cursor: pointer;
-            text-transform: uppercase; transition: 0.3s;
+            border: none; border-radius: 10px; font-weight: 900; font-size: 1.2rem; cursor: pointer; margin-top: 20px;
         }
-        .action-btn:hover { box-shadow: 0 0 20px var(--electric-blue); }
 
-        /* 5. السلة */
-        .cart-modal { position: fixed; top:0; left:0; width:100%; height:100%; background:#000; z-index:3000; display:none; flex-direction:column; padding:25px; }
-        .cart-item { display:flex; justify-content:space-between; padding:15px; background:#111; margin-bottom:10px; border-radius:10px; border:1px solid #222; }
+        /* السلة */
+        .cart-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #000; z-index: 3000; display: none; flex-direction: column; padding: 25px; }
     </style>
 </head>
 <body>
 
-    <div class="thunder-container"></div>
+    <div class="thunder-bg"></div>
 
     <nav class="navbar">
-        <div class="logo">HERO STORE</div>
-        <div class="cart-btn" onclick="openCart()">
-            <i class="fas fa-shopping-basket"></i>
-            <span id="cartCount" style="position:absolute; top:-10px; right:-15px; background:var(--electric-blue); color:#000; font-size:0.75rem; font-weight:bold; padding:2px 7px; border-radius:50%">0</span>
+        <div class="logo">HERO</div>
+        <div class="cart-bolt" onclick="openCart()">
+            <i class="fas fa-bolt"></i>
+            <span class="badge" id="cartBadge">0</span>
         </div>
     </nav>
 
-    <div class="container" id="mainGrid"></div>
-
-    <div class="detail-overlay" id="detailOverlay">
-        <i class="fas fa-times close-detail" onclick="closeDetail()"></i>
-        <div id="detailView"></div>
+    <div class="brand-header">
+        <h1>HERO STORE</h1>
+        <div class="shop-now-tag">SHOP NOW</div>
     </div>
 
-    <div class="cart-modal" id="cartModal">
+    <div class="container" id="productGrid"></div>
+
+    <div class="overlay" id="productOverlay">
+        <span class="close-btn" onclick="closeOverlay()"><i class="fas fa-times"></i></span>
+        <div id="overlayBody"></div>
+    </div>
+
+    <div class="cart-page" id="cartPage">
         <div style="display:flex; justify-content:space-between; align-items:center; margin-bottom:30px;">
-            <h2 style="color:var(--electric-blue)">طلباتك يا وحش ⚡</h2>
+            <h2 style="color:var(--electric-blue)">سلة الأبطال ⚡</h2>
             <i class="fas fa-arrow-left" onclick="closeCart()" style="font-size:1.8rem; cursor:pointer"></i>
         </div>
         <div id="cartList" style="flex:1; overflow-y:auto;"></div>
-        <div id="totalDisplay" style="padding:20px; font-size:1.8rem; text-align:center; color:var(--electric-blue); font-family:'Oswald'"></div>
+        <div id="totalPrice" style="text-align:center; padding:20px; font-size:1.5rem; color:var(--electric-blue)">الإجمالي: 0 EGP</div>
         
         <form action="https://formspree.io/f/xjgjkvqv" method="POST" style="background:#080808; padding:20px; border-radius:15px; border:1px solid #222;">
             <input type="hidden" name="Order_Items" id="orderData">
-            <input type="text" name="Name" placeholder="الاسم بالكامل" required style="width:100%; padding:15px; margin-bottom:12px; background:#000; border:1px solid #333; color:#fff; border-radius:8px; outline:none;">
-            <input type="tel" name="Phone" placeholder="رقم الموبايل للواتساب" required style="width:100%; padding:15px; margin-bottom:15px; background:#000; border:1px solid #333; color:#fff; border-radius:8px; outline:none;">
-            <button type="submit" class="action-btn">إرسال الطلب (Gmail) 🚀</button>
+            <input type="text" name="Name" placeholder="الاسم" required style="width:100%; padding:12px; margin-bottom:10px; background:#000; color:#fff; border:1px solid #333; border-radius:8px;">
+            <input type="tel" name="Phone" placeholder="رقم الهاتف" required style="width:100%; padding:12px; margin-bottom:15px; background:#000; color:#fff; border:1px solid #333; border-radius:8px;">
+            <button type="submit" class="add-btn">تأكيد الأوردر 🚀</button>
         </form>
     </div>
 
     <script>
         const products = [
-            { id: 1, name: "سترينجر هيرو - أسود نيون", price: 350, img: "https://images.unsplash.com/photo-1583454110551-21f2fa20019b?w=700", desc: "خامة قطنية 100% ليكرا، قصة ضيقة تبرز تفاصيل العضلات، مثالي للتمارين الشاقة." },
-            { id: 2, name: "تيشيرت بروفورمانس", price: 450, img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=700", desc: "مزود بتقنية طرد العرق وسريع الجفاف، خفيف جداً على الجسم أثناء التمرين." },
-            { id: 3, name: "بنطلون جوجر برو", price: 600, img: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=700", desc: "جيوب جانبية بسوستة مخفية، نسيج مرن يسمح لك بالسكوات والجري بحرية كاملة." },
-            { id: 4, name: "هودى الشتاء هيرو", price: 850, img: "https://images.unsplash.com/photo-1556813820-673c2f92d46a?w=700", desc: "بطانة داخلية ناعمة للتدفئة، تصميم عصري لوجو هيرو العاكس في الظلام." }
+            { id: 1, name: "سترينجر هيرو - أسود", price: 350, img: "https://images.unsplash.com/photo-1583454110551-21f2fa20019b?w=600", desc: "خامة قطنية ممتازة بتصميم هيرو الفريد." },
+            { id: 2, name: "تيشيرت الوحش", price: 450, img: "https://images.unsplash.com/photo-1521572267360-ee0c2909d518?w=600", desc: "تيشيرت رياضي طارد للعرق ومناسب للتمارين الشاقة." },
+            { id: 3, name: "بنطلون برو جوجر", price: 600, img: "https://images.unsplash.com/photo-1506629082955-511b1aa562c8?w=600", desc: "مرونة كاملة في الحركة مع جيوب مؤمنة." },
+            { id: 4, name: "هودي هيرو ثيرمال", price: 850, img: "https://images.unsplash.com/photo-1556813820-673c2f92d46a?w=600", desc: "تدفئة مثالية بتصميم يبرز القوة." }
         ];
 
-        let myCart = [];
+        let cart = [];
 
-        // عرض المنتجات صفين
-        function loadGrid() {
-            const grid = document.getElementById('mainGrid');
+        function renderProducts() {
+            const grid = document.getElementById('productGrid');
             grid.innerHTML = products.map(p => `
-                <div class="product-card" onclick="openDetail(${p.id})">
+                <div class="card" onclick="viewProduct(${p.id})">
                     <div class="img-box"><img src="${p.img}"></div>
                     <div class="info-box">
                         <h3>${p.name}</h3>
                         <div class="price">${p.price} EGP</div>
-                        <p style="font-size:0.65rem; color:var(--electric-blue); margin-top:4px;">تفاصيل القطعة ⚡</p>
+                        <div style="font-size:0.6rem; color:var(--electric-blue); margin-top:5px;">عرض التفاصيل ⚡</div>
                     </div>
                 </div>
             `).join('');
         }
 
-        // فتح صفحة التفاصيل
-        function openDetail(id) {
-            const p = products.find(i => i.id === id);
-            const view = document.getElementById('detailView');
-            view.innerHTML = `
-                <img src="${p.img}" class="detail-img">
-                <div class="detail-content">
-                    <h1 class="detail-title">${p.name}</h1>
-                    <div class="price" style="font-size:2rem; margin-bottom:20px;">${p.price} EGP</div>
-                    <p class="detail-desc">${p.desc}</p>
-                    <button class="action-btn" onclick="addToCart(${p.id}); closeDetail();">أضف إلى معداتك 🔥</button>
+        function viewProduct(id) {
+            const p = products.find(prod => prod.id === id);
+            const body = document.getElementById('overlayBody');
+            body.innerHTML = `
+                <img src="${p.img}" class="overlay-img">
+                <div class="overlay-info">
+                    <h1 style="font-family:'Oswald'; font-size:2rem; margin-bottom:10px;">${p.name}</h1>
+                    <div class="price" style="font-size:1.8rem; margin-bottom:15px;">${p.price} EGP</div>
+                    <p style="color:#aaa; line-height:1.6;">${p.desc}</p>
+                    <button class="add-btn" onclick="addToCart(${p.id}); closeOverlay();">إضافة إلى السلة 🔥</button>
                 </div>
             `;
-            document.getElementById('detailOverlay').style.display = 'block';
+            document.getElementById('productOverlay').style.display = 'block';
             document.body.style.overflow = 'hidden';
         }
 
-        function closeDetail() { 
-            document.getElementById('detailOverlay').style.display = 'none'; 
+        function closeOverlay() {
+            document.getElementById('productOverlay').style.display = 'none';
             document.body.style.overflow = 'auto';
         }
 
         function addToCart(id) {
-            const p = products.find(i => i.id === id);
-            myCart.push(p);
+            const product = products.find(p => p.id === id);
+            cart.push(product);
             updateCart();
+            alert("تمت الإضافة للسلة! ⚡");
         }
 
         function updateCart() {
-            document.getElementById('cartCount').innerText = myCart.length;
+            document.getElementById('cartBadge').innerText = cart.length;
             let total = 0;
             let summary = "";
             const list = document.getElementById('cartList');
-            
-            list.innerHTML = myCart.map(item => {
+            list.innerHTML = cart.map(item => {
                 total += item.price;
                 summary += `- ${item.name} (${item.price} EGP)\n`;
-                return `<div class="cart-item"><span>${item.name}</span><span style="color:var(--electric-blue)">${item.price} EGP</span></div>`;
+                return `<div style="display:flex; justify-content:space-between; padding:10px; background:#111; margin-bottom:10px; border-radius:8px;">
+                    <span>${item.name}</span><span>${item.price} EGP</span>
+                </div>`;
             }).join('');
-            
-            document.getElementById('totalDisplay').innerText = `TOTAL: ${total} EGP`;
-            document.getElementById('orderData').value = `تفاصيل الطلب:\n${summary}\nالإجمالي: ${total} EGP`;
+            document.getElementById('totalPrice').innerText = "الإجمالي: " + total + " EGP";
+            document.getElementById('orderData').value = summary + "\nالإجمالي: " + total;
         }
 
         function openCart() { 
-            if(myCart.length === 0) return alert("السلة فاضية يا وحش!");
-            document.getElementById('cartModal').style.display = 'flex'; 
+            if(cart.length == 0) return alert("السلة فاضية!");
+            document.getElementById('cartPage').style.display = 'flex'; 
         }
-        function closeCart() { document.getElementById('cartModal').style.display = 'none'; }
+        function closeCart() { document.getElementById('cartPage').style.display = 'none'; }
 
-        loadGrid();
+        renderProducts();
     </script>
 </body>
 </html>
