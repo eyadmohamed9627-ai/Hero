@@ -24,12 +24,12 @@
             background: white; position: sticky; top: 0; z-index: 1000; border-bottom: 1px solid #eee;
         }
         .logo { font-weight: 900; font-size: 1.4rem; color: var(--dark-royal); text-decoration: none; letter-spacing: 2px; }
-        .cart-icon { position: relative; cursor: pointer; font-size: 1.4rem; color: var(--hafan-dark); }
+        .cart-icon { position: relative; cursor: pointer; font-size: 1.4rem; color: var(--hafan-dark); transition: 0.3s; }
         .badge { position: absolute; top: -5px; right: -8px; background: #fb7185; color: white; font-size: 0.7rem; padding: 2px 6px; border-radius: 50%; }
 
         /* Hero Section */
         .hero {
-            height: 50vh; 
+            height: 40vh; 
             background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), 
             url('https://i.ibb.co/zTXJKbdZ/IMG-1884.jpg') no-repeat center;
             background-size: cover; 
@@ -68,28 +68,30 @@
         }
 
         /* Product Grid */
-        .container { padding: 10px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; }
+        .container { padding: 10px; display: grid; grid-template-columns: repeat(2, 1fr); gap: 15px; max-width: 800px; margin: auto; }
         .card { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); cursor: pointer; transition: 0.3s; }
         .card img { width: 100%; height: 180px; object-fit: cover; }
         .card-info { padding: 12px; text-align: center; }
         .price { color: var(--hafan-dark); font-weight: 900; margin-top: 5px; }
 
-        /* Overlays & Utilities (Same as your original) */
+        /* Overlays */
         .overlay { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: white; z-index: 2000; display: none; overflow-y: auto; }
         .close { position: absolute; top: 20px; right: 20px; font-size: 1.5rem; z-index: 10; cursor: pointer; background: rgba(255,255,255,0.8); width: 40px; height: 40px; display: flex; align-items: center; justify-content: center; border-radius: 50%; }
-        .main-img { width: 100%; height: 45vh; object-fit: cover; }
+        .main-img { width: 100%; height: 50vh; object-fit: cover; }
         .content { padding: 25px; margin-bottom: 80px; }
         .swatch { width: 35px; height: 35px; border-radius: 50%; border: 2px solid #ddd; cursor: pointer; margin: 10px 5px; display: inline-block; }
         .swatch.active { border-color: var(--hafan-dark); transform: scale(1.2); }
         .footer-bar { position: fixed; bottom: 0; left: 0; width: 100%; background: white; padding: 15px 20px; border-top: 1px solid #eee; z-index: 2100; }
-        .add-btn { width: 100%; background: var(--dark-royal); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; padding: 15px; }
+        .add-btn { width: 100%; background: var(--dark-royal); color: white; border: none; border-radius: 10px; font-weight: 800; cursor: pointer; padding: 15px; font-size: 1rem; }
+
+        /* Cart Page */
         .cart-page { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: #fafafa; z-index: 3000; display: none; flex-direction: column; }
-        .cart-items-container { flex: 1; overflow-y: auto; }
-        .cart-item { display: flex; gap: 15px; background: white; padding: 12px; border-radius: 12px; margin: 8px 15px; align-items: center; position: relative; }
+        .cart-items-container { flex: 1; overflow-y: auto; padding-top: 10px; }
+        .cart-item { display: flex; gap: 15px; background: white; padding: 12px; border-radius: 12px; margin: 8px 15px; align-items: center; position: relative; box-shadow: 0 2px 5px rgba(0,0,0,0.05); }
         .cart-item img { width: 60px; height: 60px; border-radius: 8px; object-fit: cover; }
         .remove-item { position: absolute; left: 15px; color: #ff4d4d; cursor: pointer; }
-        .total-box { padding: 15px; text-align: center; font-weight: 900; font-size: 1.2rem; }
-        .input-lx { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; }
+        .total-box { padding: 15px; text-align: center; font-weight: 900; font-size: 1.2rem; background: #fff; border-top: 1px solid #eee; }
+        .input-lx { width: 100%; padding: 12px; border: 1px solid #eee; border-radius: 8px; margin-bottom: 10px; font-size: 1rem; }
     </style>
 </head>
 <body>
@@ -120,7 +122,7 @@
         <img src="" id="d-img" class="main-img">
         <div class="content">
             <h2 id="d-title"></h2>
-            <p id="d-price"></p>
+            <p id="d-price" style="font-size: 1.4rem; font-weight: 900; color: var(--hafan-dark);"></p>
             <div style="margin: 20px 0;">
                 <p id="variantLabel" style="font-weight:700;">الخيارات المتاحة:</p>
                 <div id="swatchList"></div>
@@ -137,38 +139,36 @@
     <div class="cart-page" id="cartPage">
         <div class="navbar">
             <div class="logo">سلتك ✨</div>
-            <i class="fas fa-arrow-left" onclick="closeCart()"></i>
+            <i class="fas fa-arrow-left" style="cursor:pointer" onclick="closeCart()"></i>
         </div>
         <div class="cart-items-container" id="cartList"></div>
         <div class="total-box" id="totalBox">الإجمالي: 0 EGP</div>
+        
         <form action="https://formspree.io/f/xbdqogaw" method="POST" class="form-box" style="padding: 20px;" onsubmit="return validateForm()">
             <input type="hidden" name="تفاصيل الطلب" id="hiddenData">
             <input type="text" name="الاسم" class="input-lx" placeholder="الاسم بالكامل" required>
             <input type="tel" name="الموبايل" class="input-lx" placeholder="رقم الموبايل" required>
             <textarea name="العنوان" class="input-lx" placeholder="العنوان بالتفصيل" required></textarea>
-            <button type="submit" class="add-btn">تأكيد الطلب ✅</button>
+            <button type="submit" class="add-btn" style="background: #22c55e;">تأكيد الطلب عبر البريد ✅</button>
         </form>
     </div>
 
     <script>
         const products = [
-            // قسم الشنط (bags)
             { id: 1, category: "bags", name: "Couch Bag", price: 750, variants: [
                 { color: "#FFFFFF", img: "https://i.ibb.co/7tqY7cT9/IMG-1886.jpg", name: "أبيض" },
                 { color: "#1a1a1a", img: "https://i.ibb.co/G4V6qdCt/IMG-1885.jpg", name: "أسود" },
-                { color:"#ffd700", img: "https://i.ibb.co/fJtJ5sk/IMG-1888.png", name: "ذهبي" }
+                { color: "#ffd700", img: "https://i.ibb.co/fJtJ5sk/IMG-1888.png", name: "ذهبي" }
             ]},
             { id: 2, category: "bags", name: "Lv Jeans", price: 1600, variants: [
-                { color:"#6F8FAF", img: "https://i.ibb.co/7Jd6k9L2/eb1af371-9d7c-40d8-970b-c6060651d6b7.jpg", name: "جينس" }
+                { color: "#6F8FAF", img: "https://i.ibb.co/7Jd6k9L2/eb1af371-9d7c-40d8-970b-c6060651d6b7.jpg", name: "جينس" }
             ]},
             { id: 4, category: "bags", name: "Lv Classic", price: 1700, variants: [
-                { color:"#d5bca2", img: "https://i.ibb.co/zHf5Jwc6/IMG-1893.jpg", name: "بنى" }
+                { color: "#d5bca2", img: "https://i.ibb.co/zHf5Jwc6/IMG-1893.jpg", name: "بنى" }
             ]},
-
-            // قسم البروشات (brooch)
             { id: 101, category: "brooch", name: "Ysl", price: 250, variants: [
-                { color: "#ffd700", img: "https://i.ibb.co/7dwgLvZH/IMG-1937.png", name: "ذهبي" }
-                { color: "#B9F2FF", img: "https://i.ibb.co/tPc1kCYX/IMG-1940.png", name: "diamond" }
+                { color: "#ffd700", img: "https://i.ibb.co/7dwgLvZH/IMG-1937.png", name: "ذهبي" },
+                { color: "#B9F2FF", img: "https://i.ibb.co/tPc1kCYX/IMG-1940.png", name: "فضي/دايموند" }
             ]},
             { id: 102, category: "brooch", name: "Pearl Elegance", price: 200, variants: [
                 { color: "#f0f0f0", img: "https://images.unsplash.com/photo-1621258908320-37966967759d?q=80&w=500&auto=format", name: "لؤلؤي" }
@@ -195,11 +195,8 @@
         }
 
         function filterProducts(category, btn) {
-            // تحديث شكل الأزرار
             document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
-            
-            // رندر المنتجات
             renderProducts(category);
         }
 
@@ -208,6 +205,7 @@
             selectedVariant = currentProduct.variants[0];
             updateOverlayUI();
             document.getElementById('overlay').style.display = 'block';
+            document.body.style.overflow = 'hidden';
         }
 
         function updateOverlayUI() {
@@ -238,6 +236,11 @@
             });
             updateCartUI();
             closeProduct();
+            
+            // تأثير بصري بسيط عند الإضافة
+            const icon = document.querySelector('.cart-icon');
+            icon.style.transform = 'scale(1.3)';
+            setTimeout(() => icon.style.transform = 'scale(1)', 300);
         }
 
         function removeFromCart(cartId) {
@@ -252,17 +255,17 @@
             
             badge.innerText = cart.length;
             let total = 0;
-            let summaryText = "";
+            let summaryText = "طلب جديد من المتجر:\n";
 
             cl.innerHTML = cart.map((item) => {
                 total += item.price;
-                summaryText += `- ${item.name} (${item.variantName})\n`;
+                summaryText += `- ${item.name} | اللون: ${item.variantName} | السعر: ${item.price} EGP\n`;
                 return `
                     <div class="cart-item">
                         <img src="${item.img}">
                         <div>
                             <div style="font-weight:700">${item.name}</div>
-                            <div style="font-size:0.8rem">${item.variantName}</div>
+                            <div style="font-size:0.8rem">اللون: ${item.variantName}</div>
                             <div style="font-weight:900">${item.price} EGP</div>
                         </div>
                         <i class="fas fa-trash remove-item" onclick="removeFromCart(${item.cartId})"></i>
@@ -271,18 +274,25 @@
             }).join('');
 
             totalBox.innerText = `الإجمالي: ${total} EGP`;
-            document.getElementById('hiddenData').value = summaryText + `\nالإجمالي: ${total} EGP`;
+            document.getElementById('hiddenData').value = summaryText + `\nإجمالي الحساب: ${total} EGP`;
         }
 
         function openCart() { document.getElementById('cartPage').style.display = 'flex'; }
         function closeCart() { document.getElementById('cartPage').style.display = 'none'; }
-        function closeProduct() { document.getElementById('overlay').style.display = 'none'; }
+        function closeProduct() { 
+            document.getElementById('overlay').style.display = 'none'; 
+            document.body.style.overflow = 'auto';
+        }
         
         function validateForm() {
-            if(cart.length === 0) { alert("السلة فارغة!"); return false; }
+            if(cart.length === 0) { 
+                alert("السلة فارغة! أضف منتجات أولاً."); 
+                return false; 
+            }
             return true;
         }
 
+        // تشغيل الرندر الأولي
         renderProducts();
     </script>
 </body>
